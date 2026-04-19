@@ -1,10 +1,17 @@
 <script>
-/* 🌌 STARFIELD */
+/* SAFE START */
+window.onload = function() {
+
+/* 🌌 STARFIELD (safe init) */
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+function resizeCanvas(){
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener("resize", resizeCanvas);
 
 let stars = [];
 for(let i=0;i<150;i++){
@@ -18,8 +25,8 @@ for(let i=0;i<150;i++){
 
 function draw(){
     ctx.clearRect(0,0,canvas.width,canvas.height);
-
     ctx.fillStyle="white";
+
     stars.forEach(s=>{
         ctx.beginPath();
         ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
@@ -49,14 +56,15 @@ function heartBurst(){
     }
 }
 
-/* 📅 DATE FIX */
-const startDate = new Date("2026-04-19");
+/* 📅 BULLETPROOF DATE FIX */
+const startDate = new Date(2026, 3, 19); // April 19
 startDate.setHours(0,0,0,0);
 
-const today = new Date();
-today.setHours(0,0,0,0);
+const todayObj = new Date();
+todayObj.setHours(0,0,0,0);
+const today = todayObj.getTime();
 
-/* 💾 SAVE OPEN STATE */
+/* 💾 SAVE STATE */
 let opened = JSON.parse(localStorage.getItem("opened") || "[]");
 
 /* 💌 YOUR ORIGINAL MESSAGES */
@@ -105,7 +113,9 @@ for(let i=0;i<7;i++){
     unlock.setDate(startDate.getDate()+i);
     unlock.setHours(0,0,0,0);
 
-    if(today < unlock){
+    let unlockTime = unlock.getTime();
+
+    if(today < unlockTime){
         box.classList.add("locked");
     }
 
@@ -113,11 +123,11 @@ for(let i=0;i<7;i++){
         box.classList.add("opened");
     }
 
-    box.innerText="April "+(19+i)+(today<unlock?" 🔒":"");
+    box.innerText="April "+(19+i)+(today<unlockTime?" 🔒":"");
 
     box.onclick=()=>{
 
-        if(today < unlock){
+        if(today < unlockTime){
             box.style.animation="shake 0.3s";
             setTimeout(()=>box.style.animation="",300);
             return;
@@ -156,4 +166,6 @@ I’ll treat it like something I never take for granted again.
 
     grid.appendChild(box);
 }
+
+}; // END SAFE LOAD
 </script>
