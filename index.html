@@ -9,89 +9,41 @@
 <style>
 body {
     margin: 0;
-    overflow: hidden;
-    font-family: 'Segoe UI', sans-serif;
+    font-family: Arial, sans-serif;
     background: black;
     color: white;
     text-align: center;
-}
-
-canvas {
-    position: fixed;
-    top: 0;
-    left: 0;
-}
-
-.container {
-    position: relative;
-    z-index: 2;
     padding: 20px;
 }
 
 .grid {
     display: grid;
     grid-template-columns: repeat(2,1fr);
-    gap: 14px;
+    gap: 12px;
     margin-top: 20px;
 }
 
 .box {
     padding: 20px;
-    border-radius: 12px;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid #333;
+    background: #222;
+    border-radius: 10px;
     cursor: pointer;
-    transition: 0.3s;
 }
 
 .box.locked {
     opacity: 0.4;
-    cursor: not-allowed;
 }
 
 .box.opened {
     background: #ff4d6d;
-    box-shadow: 0 0 20px #ff4d6d;
 }
 
-.message-card {
-    margin-top: 25px;
-    padding: 30px;
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
-    border-radius: 20px;
-    background: rgba(255,255,255,0.07);
-    border: 1px solid rgba(255,255,255,0.15);
-    box-shadow: 0 0 25px rgba(255,77,109,0.2);
-    opacity: 0;
-    transform: translateY(20px);
-    transition: 0.5s;
+.message {
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #444;
+    border-radius: 10px;
     white-space: pre-line;
-}
-
-.message-card.show {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.heart {
-    position: fixed;
-    color: #ff4d6d;
-    animation: rise 3s linear forwards;
-}
-
-@keyframes rise {
-    0% {transform: translateY(0); opacity:1;}
-    100% {transform: translateY(-100vh); opacity:0;}
-}
-
-@keyframes shake {
-    0% {transform: translateX(0);}
-    25% {transform: translateX(-6px);}
-    50% {transform: translateX(6px);}
-    75% {transform: translateX(-6px);}
-    100% {transform: translateX(0);}
 }
 </style>
 
@@ -99,81 +51,17 @@ canvas {
 
 <body>
 
-<canvas id="canvas"></canvas>
+<h1>For You, Liya 💖</h1>
+<p>One day at a time… till April 25</p>
 
-<div class="container">
-    <h1>For You, Liya 💖</h1>
-    <p>One day at a time… till April 25</p>
-
-```
-<div class="grid" id="grid"></div>
-<div id="msg" class="message-card"></div>
-```
-
-</div>
+<div id="grid" class="grid"></div>
+<div id="msg" class="message"></div>
 
 <script>
 document.addEventListener("DOMContentLoaded", function(){
 
-/* SAFE CANVAS */
-const canvas = document.getElementById("canvas");
-
-let ctx = null;
-if(canvas){
-    ctx = canvas.getContext("2d");
-
-    function resizeCanvas(){
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    }
-    resizeCanvas();
-    window.addEventListener("resize", resizeCanvas);
-
-    let stars = [];
-    for(let i=0;i<100;i++){
-        stars.push({
-            x: Math.random()*canvas.width,
-            y: Math.random()*canvas.height,
-            r: Math.random()*1.5,
-            d: Math.random()*0.5
-        });
-    }
-
-    function draw(){
-        if(!ctx) return;
-
-        ctx.clearRect(0,0,canvas.width,canvas.height);
-        ctx.fillStyle="white";
-
-        stars.forEach(s=>{
-            ctx.beginPath();
-            ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
-            ctx.fill();
-
-            s.y+=s.d;
-            if(s.y>canvas.height){
-                s.y=0;
-                s.x=Math.random()*canvas.width;
-            }
-        });
-
-        requestAnimationFrame(draw);
-    }
-    draw();
-}
-
-/* HEART */
-function heartBurst(){
-    for(let i=0;i<20;i++){
-        let h=document.createElement("div");
-        h.className="heart";
-        h.innerText="❤";
-        h.style.left=Math.random()*100+"vw";
-        h.style.bottom="0px";
-        document.body.appendChild(h);
-        setTimeout(()=>h.remove(),3000);
-    }
-}
+const grid = document.getElementById("grid");
+const msg = document.getElementById("msg");
 
 /* DATE */
 const startDate = new Date(2026, 3, 19);
@@ -182,58 +70,35 @@ startDate.setHours(0,0,0,0);
 const today = new Date();
 today.setHours(0,0,0,0);
 
-/* SAVE */
-let opened = JSON.parse(localStorage.getItem("opened") || "[]");
-
 /* MESSAGES */
 const messages = [
-"I don’t even know how to begin this properly… but I’ll try.\n\nI love you. Not in a casual way, not in a temporary way… but in a way where even silence reminds me of you.\n\nIf I hurt you, I’m truly sorry. That was never my intention, and I hate the thought that I made you feel anything less than special.",
-
-"I’ve started noticing something… you’re in my thoughts more than I admit.\n\nNot just when I’m free, but even in the middle of everything.\n\nAnd slowly I’ve realized — you matter to me in a way I can’t ignore anymore.",
-
-"I don’t want to be someone you doubt.\n\nI want to be someone you feel safe with… someone who doesn’t just say things, but proves them quietly every single day.",
-
-"I’m not perfect, and I don’t want to pretend I am.\n\nBut I’m learning. For you. For us.\n\nAnd I hope that counts for something.",
-
-"If I ever get a chance to fix things properly, I won’t waste it again.\n\nNot with words this time… but with actions that stay consistent, even when nobody is watching.",
-
-"The thought of losing you is something I don’t want to experience again.\n\nBecause once you become important to someone, even the idea of distance feels heavy.",
-
-"FINAL"
+"I don’t even know how to begin this properly… but I’ll try.\n\nI love you. Not in a casual way, not in a temporary way… but in a way where even silence reminds me of you.\n\nIf I hurt you, I’m truly sorry.",
+"You’re in my thoughts more than I admit.",
+"I want to be someone you feel safe with.",
+"I’m learning. For you.",
+"I won’t waste a second chance.",
+"Losing you scares me.",
+"💖 FINAL DAY 💖\n\nYou matter. More than words. More than distance."
 ];
 
-/* GRID */
-const grid = document.getElementById("grid");
-
+/* CREATE BOXES */
 for(let i=0;i<7;i++){
+
     let box=document.createElement("div");
     box.className="box";
 
     let unlock=new Date(startDate);
     unlock.setDate(startDate.getDate()+i);
-    unlock.setHours(0,0,0,0);
 
     if(today < unlock) box.classList.add("locked");
-    if(opened[i]) box.classList.add("opened");
 
-    box.innerText="April "+(19+i)+(today<unlock?" 🔒":"");
+    box.innerText="April "+(19+i);
 
-    box.onclick=()=>{
+    box.onclick=function(){
+        if(today < unlock) return;
 
-        if(today < unlock){
-            box.style.animation="shake 0.3s";
-            setTimeout(()=>box.style.animation="",300);
-            return;
-        }
-
-        let msg=document.getElementById("msg");
         msg.innerText = messages[i];
-
-        if(i===6) heartBurst();
-
         box.classList.add("opened");
-        opened[i] = true;
-        localStorage.setItem("opened", JSON.stringify(opened));
     };
 
     grid.appendChild(box);
@@ -241,7 +106,6 @@ for(let i=0;i<7;i++){
 
 });
 </script>
-
 
 </body>
 </html>
