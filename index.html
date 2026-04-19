@@ -13,6 +13,20 @@ body {
     background: black;
     color: white;
     text-align: center;
+}
+
+/* STAR CANVAS */
+canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 0;
+}
+
+/* CONTENT */
+.container {
+    position: relative;
+    z-index: 2;
     padding: 20px;
 }
 
@@ -28,6 +42,7 @@ body {
     background: #222;
     border-radius: 10px;
     cursor: pointer;
+    transition: 0.3s;
 }
 
 .box.locked {
@@ -51,37 +66,93 @@ body {
 
 <body>
 
+<canvas id="canvas"></canvas>
+
+<div class="container">
 <h1>For You, Liya 💖</h1>
 <p>One day at a time… till April 25</p>
 
 <div id="grid" class="grid"></div>
 <div id="msg" class="message"></div>
+</div>
 
 <script>
 document.addEventListener("DOMContentLoaded", function(){
 
-const grid = document.getElementById("grid");
-const msg = document.getElementById("msg");
+/* 🌌 STARFIELD (SAFE) */
+const canvas = document.getElementById("canvas");
 
-/* DATE */
+if(canvas){
+    const ctx = canvas.getContext("2d");
+
+    function resize(){
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener("resize", resize);
+
+    let stars = [];
+    for(let i=0;i<120;i++){
+        stars.push({
+            x: Math.random()*canvas.width,
+            y: Math.random()*canvas.height,
+            r: Math.random()*1.5,
+            d: Math.random()*0.6
+        });
+    }
+
+    function draw(){
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        ctx.fillStyle = "white";
+
+        stars.forEach(s=>{
+            ctx.beginPath();
+            ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+            ctx.fill();
+
+            s.y += s.d;
+
+            if(s.y > canvas.height){
+                s.y = 0;
+                s.x = Math.random()*canvas.width;
+            }
+        });
+
+        requestAnimationFrame(draw);
+    }
+
+    draw();
+}
+
+/* 📅 DATE */
 const startDate = new Date(2026, 3, 19);
 startDate.setHours(0,0,0,0);
 
 const today = new Date();
 today.setHours(0,0,0,0);
 
-/* MESSAGES */
+/* 💌 MESSAGES */
 const messages = [
 "I don’t even know how to begin this properly… but I’ll try.\n\nI love you. Not in a casual way, not in a temporary way… but in a way where even silence reminds me of you.\n\nIf I hurt you, I’m truly sorry.",
-"You’re in my thoughts more than I admit.",
-"I want to be someone you feel safe with.",
-"I’m learning. For you.",
-"I won’t waste a second chance.",
-"Losing you scares me.",
+
+"I’ve started noticing something… you’re in my thoughts more than I admit.\n\nNot just when I’m free, but even in the middle of everything.\n\nYou matter to me.",
+
+"I don’t want to be someone you doubt.\n\nI want to be someone you feel safe with.",
+
+"I’m not perfect.\n\nBut I’m learning. For you.",
+
+"If I get a chance again, I won’t waste it.",
+
+"The thought of losing you hurts more than anything.",
+
 "💖 FINAL DAY 💖\n\nYou matter. More than words. More than distance."
 ];
 
-/* CREATE BOXES */
+/* GRID */
+const grid = document.getElementById("grid");
+const msg = document.getElementById("msg");
+
 for(let i=0;i<7;i++){
 
     let box=document.createElement("div");
