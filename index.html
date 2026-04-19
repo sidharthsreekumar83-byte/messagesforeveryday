@@ -1,8 +1,121 @@
-<script>
-/* SAFE START */
-window.onload = function() {
+<!DOCTYPE html>
 
-/* 🌌 STARFIELD (safe init) */
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Liya 💖</title>
+
+<style>
+body {
+    margin: 0;
+    overflow: hidden;
+    font-family: 'Segoe UI', sans-serif;
+    background: black;
+    color: white;
+    text-align: center;
+}
+
+canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.container {
+    position: relative;
+    z-index: 2;
+    padding: 20px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    gap: 14px;
+    margin-top: 20px;
+}
+
+.box {
+    padding: 20px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid #333;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.box.locked {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.box.opened {
+    background: #ff4d6d;
+    box-shadow: 0 0 20px #ff4d6d;
+}
+
+.message-card {
+    margin-top: 25px;
+    padding: 30px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.15);
+    box-shadow: 0 0 25px rgba(255,77,109,0.2);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: 0.5s;
+    white-space: pre-line;
+}
+
+.message-card.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.heart {
+    position: fixed;
+    color: #ff4d6d;
+    animation: rise 3s linear forwards;
+}
+
+@keyframes rise {
+    0% {transform: translateY(0); opacity:1;}
+    100% {transform: translateY(-100vh); opacity:0;}
+}
+
+@keyframes shake {
+    0% {transform: translateX(0);}
+    25% {transform: translateX(-6px);}
+    50% {transform: translateX(6px);}
+    75% {transform: translateX(-6px);}
+    100% {transform: translateX(0);}
+}
+</style>
+
+</head>
+
+<body>
+
+<canvas id="canvas"></canvas>
+
+<div class="container">
+    <h1>For You, Liya 💖</h1>
+    <p>One day at a time… till April 25</p>
+
+```
+<div class="grid" id="grid"></div>
+<div id="msg" class="message-card"></div>
+```
+
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+
+/* 🌌 STARFIELD SAFE */
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
@@ -43,7 +156,7 @@ function draw(){
 }
 draw();
 
-/* 💖 Heart burst */
+/* 💖 HEART BURST */
 function heartBurst(){
     for(let i=0;i<25;i++){
         let h=document.createElement("div");
@@ -56,15 +169,14 @@ function heartBurst(){
     }
 }
 
-/* 📅 BULLETPROOF DATE FIX */
-const startDate = new Date(2026, 3, 19); // April 19
+/* 📅 SAFE DATE */
+const startDate = new Date(2026, 3, 19);
 startDate.setHours(0,0,0,0);
 
-const todayObj = new Date();
-todayObj.setHours(0,0,0,0);
-const today = todayObj.getTime();
+const today = new Date();
+today.setHours(0,0,0,0);
 
-/* 💾 SAVE STATE */
+/* 💾 SAVE */
 let opened = JSON.parse(localStorage.getItem("opened") || "[]");
 
 /* 💌 YOUR ORIGINAL MESSAGES */
@@ -109,25 +221,18 @@ for(let i=0;i<7;i++){
     let box=document.createElement("div");
     box.className="box";
 
-    let unlock = new Date(startDate);
+    let unlock=new Date(startDate);
     unlock.setDate(startDate.getDate()+i);
     unlock.setHours(0,0,0,0);
 
-    let unlockTime = unlock.getTime();
+    if(today < unlock) box.classList.add("locked");
+    if(opened[i]) box.classList.add("opened");
 
-    if(today < unlockTime){
-        box.classList.add("locked");
-    }
-
-    if(opened[i]){
-        box.classList.add("opened");
-    }
-
-    box.innerText="April "+(19+i)+(today<unlockTime?" 🔒":"");
+    box.innerText="April "+(19+i)+(today<unlock?" 🔒":"");
 
     box.onclick=()=>{
 
-        if(today < unlockTime){
+        if(today < unlock){
             box.style.animation="shake 0.3s";
             setTimeout(()=>box.style.animation="",300);
             return;
@@ -167,5 +272,8 @@ I’ll treat it like something I never take for granted again.
     grid.appendChild(box);
 }
 
-}; // END SAFE LOAD
+});
 </script>
+
+</body>
+</html>
