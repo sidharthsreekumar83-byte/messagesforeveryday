@@ -1,112 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>For Liya 💖</title>
-
-<style>
-body {
-    margin: 0;
-    overflow: hidden;
-    font-family: 'Segoe UI', sans-serif;
-    background: black;
-    color: white;
-    text-align: center;
-}
-
-canvas {
-    position: fixed;
-    top: 0;
-    left: 0;
-}
-
-.container {
-    position: relative;
-    z-index: 2;
-    padding: 20px;
-}
-
-.grid {
-    display: grid;
-    grid-template-columns: repeat(2,1fr);
-    gap: 14px;
-    margin-top: 20px;
-}
-
-.box {
-    padding: 20px;
-    border-radius: 12px;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid #333;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.box.locked {
-    opacity: 0.4;
-    cursor: not-allowed;
-}
-
-.box.opened {
-    background: #ff4d6d;
-    box-shadow: 0 0 20px #ff4d6d;
-}
-
-.message-card {
-    margin-top: 25px;
-    padding: 30px;
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
-    border-radius: 20px;
-    background: rgba(255,255,255,0.07);
-    border: 1px solid rgba(255,255,255,0.15);
-    box-shadow: 0 0 25px rgba(255,77,109,0.2);
-    opacity: 0;
-    transform: translateY(20px);
-    transition: 0.5s;
-    white-space: pre-line;
-}
-
-.message-card.show {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.heart {
-    position: fixed;
-    color: #ff4d6d;
-    animation: rise 3s linear forwards;
-}
-
-@keyframes rise {
-    0% {transform: translateY(0); opacity:1;}
-    100% {transform: translateY(-100vh); opacity:0;}
-}
-
-@keyframes shake {
-    0% {transform: translateX(0);}
-    25% {transform: translateX(-6px);}
-    50% {transform: translateX(6px);}
-    75% {transform: translateX(-6px);}
-    100% {transform: translateX(0);}
-}
-</style>
-</head>
-
-<body>
-
-<canvas id="canvas"></canvas>
-
-<div class="container">
-    <h1>For You, Liya 💖</h1>
-    <p>One day at a time… till April 25</p>
-
-    <div class="grid" id="grid"></div>
-    <div id="msg" class="message-card"></div>
-</div>
-
 <script>
 /* 🌌 STARFIELD */
 const canvas = document.getElementById("canvas");
@@ -158,7 +49,7 @@ function heartBurst(){
     }
 }
 
-/* 📅 DATE FIX (IMPORTANT) */
+/* 📅 DATE FIX */
 const startDate = new Date("2026-04-19");
 startDate.setHours(0,0,0,0);
 
@@ -168,14 +59,38 @@ today.setHours(0,0,0,0);
 /* 💾 SAVE OPEN STATE */
 let opened = JSON.parse(localStorage.getItem("opened") || "[]");
 
-/* 💌 MESSAGES */
+/* 💌 YOUR ORIGINAL MESSAGES */
 const messages = [
-`I love you. Truly. And I’m sorry if I ever hurt you.`,
-`You stay in my mind more than I say.`,
-`I want to be someone you feel safe with.`,
-`I’m learning… for you.`,
-`I won’t waste a second chance.`,
-`Losing you scares me.`,
+`I don’t even know how to begin this properly… but I’ll try.
+
+I love you. Not in a casual way, not in a temporary way… but in a way where even silence reminds me of you.
+
+If I hurt you, I’m truly sorry. That was never my intention, and I hate the thought that I made you feel anything less than special.`,
+
+`I’ve started noticing something… you’re in my thoughts more than I admit.
+
+Not just when I’m free, but even in the middle of everything.
+
+And slowly I’ve realized — you matter to me in a way I can’t ignore anymore.`,
+
+`I don’t want to be someone you doubt.
+
+I want to be someone you feel safe with… someone who doesn’t just say things, but proves them quietly every single day.`,
+
+`I’m not perfect, and I don’t want to pretend I am.
+
+But I’m learning. For you. For us.
+
+And I hope that counts for something.`,
+
+`If I ever get a chance to fix things properly, I won’t waste it again.
+
+Not with words this time… but with actions that stay consistent, even when nobody is watching.`,
+
+`The thought of losing you is something I don’t want to experience again.
+
+Because once you become important to someone, even the idea of distance feels heavy.`,
+
 `FINAL`
 ];
 
@@ -218,10 +133,13 @@ for(let i=0;i<7;i++){
                 msg.innerHTML = `
 💖 FINAL DAY 💖
 
-You matter to me… more than I can explain.
+I didn’t just want to say this…
+I wanted you to feel it.
 
-If there’s still a place for me in your heart,
-I promise I’ll never take it for granted again.
+You matter. More than words. More than distance. More than silence.
+
+If there’s still a place for me in your heart…
+I’ll treat it like something I never take for granted again.
 `;
             } else {
                 msg.innerText = messages[i];
@@ -239,6 +157,3 @@ I promise I’ll never take it for granted again.
     grid.appendChild(box);
 }
 </script>
-
-</body>
-</html>
